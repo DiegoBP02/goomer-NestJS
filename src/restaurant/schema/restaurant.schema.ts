@@ -1,4 +1,14 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+
+export type RestaurantDocument = Restaurant & Document;
+
+export type BusinessHours = {
+  dayOfWeekStart: string;
+  dayOfWeekEnd: string;
+  startTime: string;
+  endTime: string;
+};
 
 @Schema()
 export class Restaurant {
@@ -12,10 +22,7 @@ export class Restaurant {
   address: string;
 
   @Prop()
-  businessHoursStart: string;
-
-  @Prop()
-  businessHoursEnd: string;
+  businessHours: BusinessHours[];
 }
 
-export const UsersSchema = SchemaFactory.createForClass(Restaurant);
+export const RestaurantSchema = SchemaFactory.createForClass(Restaurant);
