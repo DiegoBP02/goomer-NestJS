@@ -19,15 +19,15 @@ function isValidDayOfWeek(dayOfWeek: string): boolean {
   return daysOfWeek.includes(dayOfWeek);
 }
 
-function isValidTime(time: string): boolean {
+const isValidTime = (time: string): boolean => {
   return moment(time, 'HH:mm', true).isValid();
-}
+};
 
-function checkTimeInterval(start: string, end: string): boolean {
+const checkTimeInterval = (start: string, end: string): boolean => {
   const format = 'HH:mm';
   const diff = moment.duration(moment(start, format).diff(moment(end, format)));
   return Math.abs(diff.asMinutes()) >= 15;
-}
+};
 
 const setMomentTime = (day: string, hour: string, minute: string) => {
   return moment()
@@ -37,7 +37,10 @@ const setMomentTime = (day: string, hour: string, minute: string) => {
     .set('second', 0);
 };
 
-function checkForOverlap(item1: BusinessHours, item2: BusinessHours): boolean {
+const checkForOverlap = (
+  item1: BusinessHours,
+  item2: BusinessHours,
+): boolean => {
   const start1 = setMomentTime(
     item1.dayOfWeekStart,
     item1.startTime,
@@ -52,7 +55,7 @@ function checkForOverlap(item1: BusinessHours, item2: BusinessHours): boolean {
   const end2 = setMomentTime(item2.dayOfWeekEnd, item2.endTime, item2.endTime);
 
   return start2.isBetween(start1, end1) || end2.isBetween(start1, end1);
-}
+};
 
 @ValidatorConstraint()
 export class IsValidBusinessHours implements ValidatorConstraintInterface {
