@@ -76,7 +76,7 @@ describe('RestaurantRepository', () => {
           );
         });
 
-        test('then it should return an array of users', () => {
+        test('then it should return an array of restaurants', () => {
           expect(restaurants).toEqual([restaurantStub()]);
         });
       });
@@ -163,12 +163,12 @@ describe('RestaurantRepository', () => {
           restaurant = await restaurantRepository.create(restaurantStub());
         });
 
-        test('then it should call the userModel', () => {
+        test('then it should call the restaurantModel', () => {
           expect(saveSpy).toHaveBeenCalled();
           expect(constructorSpy).toHaveBeenCalledWith(restaurantStub());
         });
 
-        test('then it should return a user', () => {
+        test('then it should return a restaurant', () => {
           expect(restaurant).toEqual(restaurantStub());
         });
       });
