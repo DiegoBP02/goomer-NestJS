@@ -81,7 +81,7 @@ export class IsValidBusinessHours implements ValidatorConstraintInterface {
         if (item.dayOfWeekEnd == currentItem.dayOfWeekStart) {
           if (!checkTimeInterval(item.endTime, currentItem.startTime)) {
             throw new InvalidBusinessHours(
-              'There must be at least a 15 minute interval',
+              'There must be at least a 15 minute interval!',
             );
           }
         }
