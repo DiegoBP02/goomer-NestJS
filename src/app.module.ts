@@ -1,23 +1,19 @@
-import { MiddlewareConsumer, Module, ValidationPipe } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppService } from './app.service';
-import { MongooseModule } from '@nestjs/mongoose';
 import { APP_PIPE } from '@nestjs/core';
 import { RestaurantModule } from './restaurant/restaurant.module';
-import { RestaurantMiddleware } from './restaurant/middlewares/restaurant-not-found.middleware';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGO_URI, {
-      dbName: 'goomer',
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
     RestaurantModule,
+    DatabaseModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({

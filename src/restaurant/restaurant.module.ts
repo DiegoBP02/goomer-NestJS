@@ -16,7 +16,7 @@ import { RestaurantMiddleware } from './middlewares/restaurant-not-found.middlew
   providers: [RestaurantService, RestaurantRepository],
 })
 export class RestaurantModule {
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer.apply(RestaurantMiddleware).forRoutes('restaurant/:id');
-  // }
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RestaurantMiddleware).forRoutes('restaurant/:id');
+  }
 }

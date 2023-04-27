@@ -8,7 +8,7 @@ import { UpdateRestaurantDto } from '../dto/update-restaurant.dto';
 
 jest.mock('../restaurant.service');
 
-describe('UsersController', () => {
+describe('RestaurantController', () => {
   let restaurantController: RestaurantController;
   let restaurantService: RestaurantService;
 
@@ -47,8 +47,8 @@ describe('UsersController', () => {
     });
   });
 
-  describe('getUsers', () => {
-    describe('when getUsers is called', () => {
+  describe('getRestaurants', () => {
+    describe('when getRestaurants is called', () => {
       let restaurants: Restaurant[];
 
       beforeEach(async () => {
@@ -92,7 +92,7 @@ describe('UsersController', () => {
   });
 
   describe('updateRestaurant', () => {
-    describe('when updateUser is called', () => {
+    describe('when updateRestaurant is called', () => {
       let restaurant: Restaurant;
       let updateRestaurantDto: UpdateRestaurantDto;
 
