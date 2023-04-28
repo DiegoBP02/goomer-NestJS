@@ -15,7 +15,7 @@ export class Restaurant {
   @Prop()
   image: string;
 
-  @Prop()
+  @Prop({ unique: true })
   name: string;
 
   @Prop()
