@@ -6,16 +6,17 @@ import * as moment from 'moment';
 import { InvalidBusinessHours } from '../../exceptions/invalid-businesshours.exception';
 import { BusinessHours } from 'src/restaurant/schema/restaurant.schema';
 
+const daysOfWeek = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+];
+
 function isValidDayOfWeek(dayOfWeek: string): boolean {
-  const daysOfWeek = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-  ];
   return daysOfWeek.includes(dayOfWeek);
 }
 
@@ -41,20 +42,24 @@ const checkForOverlap = (
   item1: BusinessHours,
   item2: BusinessHours,
 ): boolean => {
-  const start1 = setMomentTime(
-    item1.dayOfWeekStart,
-    item1.startTime,
-    item1.startTime,
-  );
-  const end1 = setMomentTime(item1.dayOfWeekEnd, item1.endTime, item1.endTime);
-  const start2 = setMomentTime(
-    item2.dayOfWeekStart,
-    item2.startTime,
-    item2.startTime,
-  );
-  const end2 = setMomentTime(item2.dayOfWeekEnd, item2.endTime, item2.endTime);
+  for (
+    let i = daysOfWeek.indexOf(item1.dayOfWeekStart);
+    i <= daysOfWeek.indexOf(item1.dayOfWeekEnd);
+    i++
+  ) {
+    const day = daysOfWeek[i];
 
-  return start2.isBetween(start1, end1) || end2.isBetween(start1, end1);
+    const start1 = setMomentTime(day, item1.startTime, item1.startTime);
+    const end1 = setMomentTime(day, item1.endTime, item1.endTime);
+    const start2 = setMomentTime(day, item2.startTime, item2.startTime);
+    const end2 = setMomentTime(day, item2.endTime, item2.endTime);
+
+    if (start2.isBetween(start1, end1) || end2.isBetween(start1, end1)) {
+      return true;
+    }
+  }
+
+  return false;
 };
 
 @ValidatorConstraint()
