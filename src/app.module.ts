@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { DatabaseModule } from './database/database.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { DatabaseModule } from './database/database.module';
     }),
     RestaurantModule,
     DatabaseModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [

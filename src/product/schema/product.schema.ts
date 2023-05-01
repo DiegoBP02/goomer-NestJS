@@ -15,11 +15,13 @@ export enum Category {
 export type Sale = {
   description: string;
   promotionalPrice: number;
-  timeOnSale: {
-    daysOfWeek: string[];
-    startTime: string;
-    endTime: string;
-  };
+  timeOnSale: TimeOnSale;
+};
+
+type TimeOnSale = {
+  daysOfWeek: string[];
+  startTime: string;
+  endTime: string;
 };
 
 @Schema()
@@ -37,7 +39,7 @@ export class Product {
   category: string;
 
   @Prop()
-  sale: Sale;
+  sale: Sale[];
 
   @Prop({ type: Types.ObjectId, ref: Restaurant.name })
   restaurantId: Types.ObjectId;

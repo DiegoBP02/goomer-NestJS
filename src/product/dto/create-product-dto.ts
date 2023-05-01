@@ -4,8 +4,8 @@ import {
   IsNotEmpty,
   IsNumber,
   IsEnum,
-  IsNotEmptyObject,
   IsMongoId,
+  ArrayNotEmpty,
 } from 'class-validator';
 import { Category, Sale } from '../schema/product.schema';
 import { Types } from 'mongoose';
@@ -28,8 +28,8 @@ export class CreateProductDto {
   @IsEnum(Category)
   readonly category: Category;
 
-  @IsNotEmptyObject()
-  readonly sale: Sale;
+  @ArrayNotEmpty()
+  readonly sale: Sale[];
 
   @IsMongoId()
   readonly restaurantId: Types.ObjectId;

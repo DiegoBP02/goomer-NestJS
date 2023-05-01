@@ -13,7 +13,8 @@ import { RestaurantMiddleware } from './middlewares/restaurant-not-found.middlew
     ]),
   ],
   controllers: [RestaurantController],
-  providers: [RestaurantService, RestaurantRepository],
+  providers: [RestaurantService, RestaurantRepository, RestaurantController],
+  exports: [RestaurantController],
 })
 export class RestaurantModule {
   configure(consumer: MiddlewareConsumer) {
