@@ -6,18 +6,9 @@ import * as moment from 'moment';
 import { InvalidBusinessHours } from '../../exceptions/invalid-businesshours.exception';
 import { BusinessHours } from 'src/restaurant/schema/restaurant.schema';
 
-const daysOfWeek = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
-
 function isValidDayOfWeek(dayOfWeek: string): boolean {
-  return daysOfWeek.includes(dayOfWeek);
+  const weekdays = moment.weekdays();
+  return weekdays.includes(dayOfWeek);
 }
 
 const isValidTime = (time: string): boolean => {
@@ -30,29 +21,41 @@ const checkTimeInterval = (start: string, end: string): boolean => {
   return Math.abs(diff.asMinutes()) >= 15;
 };
 
-const setMomentTime = (day: string, hour: string, minute: string) => {
-  return moment()
-    .day(day)
-    .set('hour', moment(hour, 'HH:mm').hours())
-    .set('minute', moment(minute, 'HH:mm').minutes())
-    .set('second', 0);
-};
-
 const checkForOverlap = (
   item1: BusinessHours,
   item2: BusinessHours,
 ): boolean => {
-  for (
-    let i = daysOfWeek.indexOf(item1.dayOfWeekStart);
-    i <= daysOfWeek.indexOf(item1.dayOfWeekEnd);
-    i++
-  ) {
-    const day = daysOfWeek[i];
+  const format = 'HH:mm';
 
-    const start1 = setMomentTime(day, item1.startTime, item1.startTime);
-    const end1 = setMomentTime(day, item1.endTime, item1.endTime);
-    const start2 = setMomentTime(day, item2.startTime, item2.startTime);
-    const end2 = setMomentTime(day, item2.endTime, item2.endTime);
+  for (
+    let i = moment().day(item1.dayOfWeekStart);
+    i <= moment().day(item1.dayOfWeekEnd);
+    i.add(1, 'days')
+  ) {
+    const start1 = moment(item1.startTime, format);
+    const end1 = moment(item1.endTime, format);
+    const start2 = moment(item2.startTime, format);
+    const end2 = moment(item2.endTime, format);
+    const currentDay = i.format('dddd');
+
+    if (
+      currentDay === item2.dayOfWeekStart ||
+      currentDay === item2.dayOfWeekEnd
+    ) {
+      if (currentDay === item2.dayOfWeekStart) {
+        start2.hours(moment(item2.startTime, format).hours());
+        start2.minutes(moment(item2.startTime, format).minutes());
+      }
+      if (currentDay === item2.dayOfWeekEnd) {
+        end2.hours(moment(item2.endTime, format).hours());
+        end2.minutes(moment(item2.endTime, format).minutes());
+      }
+    } else {
+      start2.hours(0);
+      start2.minutes(0);
+      end2.hours(23);
+      end2.minutes(59);
+    }
 
     if (start2.isBetween(start1, end1) || end2.isBetween(start1, end1)) {
       return true;
