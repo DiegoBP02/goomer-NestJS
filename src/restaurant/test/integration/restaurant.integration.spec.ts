@@ -113,7 +113,7 @@ describe('RestaurantController', () => {
             dayOfWeekStart: 'Thursday',
             dayOfWeekEnd: 'Sunday',
             startTime: '15:00',
-            endTime: '13:00',
+            endTime: '18:00',
           },
         ],
       };
@@ -128,7 +128,7 @@ describe('RestaurantController', () => {
           'Something went wrong in businessHours property: There must be at least a 15 minute interval!',
       });
     });
-    it('should throw invalid business hours - time conflict', async () => {
+    it('should throw invalid business hours - check startTime overlap - time conflict', async () => {
       const createRestaurantRequest: CreateRestaurantDto = {
         ...restaurantStub(),
         businessHours: [
@@ -140,9 +140,96 @@ describe('RestaurantController', () => {
           },
           {
             dayOfWeekStart: 'Thursday',
-            dayOfWeekEnd: 'Sunday',
+            dayOfWeekEnd: 'Friday',
             startTime: '13:00',
             endTime: '19:00',
+          },
+        ],
+      };
+      const res = await request(httpServer)
+        .post('/restaurant')
+        .send(createRestaurantRequest);
+
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({
+        statusCode: 400,
+        message:
+          'Something went wrong in businessHours property: Time conflict!',
+      });
+    });
+    it('should throw invalid business hours - check endTime overlap - time conflict', async () => {
+      const createRestaurantRequest: CreateRestaurantDto = {
+        ...restaurantStub(),
+        businessHours: [
+          {
+            dayOfWeekStart: 'Monday',
+            dayOfWeekEnd: 'Thursday',
+            startTime: '06:00',
+            endTime: '15:00',
+          },
+          {
+            dayOfWeekStart: 'Sunday',
+            dayOfWeekEnd: 'Monday',
+            startTime: '04:00',
+            endTime: '07:00',
+          },
+        ],
+      };
+      const res = await request(httpServer)
+        .post('/restaurant')
+        .send(createRestaurantRequest);
+
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({
+        statusCode: 400,
+        message:
+          'Something went wrong in businessHours property: Time conflict!',
+      });
+    });
+    it('should throw invalid business hours - check same day - time conflict', async () => {
+      const createRestaurantRequest: CreateRestaurantDto = {
+        ...restaurantStub(),
+        businessHours: [
+          {
+            dayOfWeekStart: 'Monday',
+            dayOfWeekEnd: 'Thursday',
+            startTime: '06:00',
+            endTime: '15:00',
+          },
+          {
+            dayOfWeekStart: 'Monday',
+            dayOfWeekEnd: 'Thursday',
+            startTime: '07:00',
+            endTime: '14:00',
+          },
+        ],
+      };
+      const res = await request(httpServer)
+        .post('/restaurant')
+        .send(createRestaurantRequest);
+
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({
+        statusCode: 400,
+        message:
+          'Something went wrong in businessHours property: Time conflict!',
+      });
+    });
+    it('should throw invalid business hours - check range engulfs another - time conflict', async () => {
+      const createRestaurantRequest: CreateRestaurantDto = {
+        ...restaurantStub(),
+        businessHours: [
+          {
+            dayOfWeekStart: 'Monday',
+            dayOfWeekEnd: 'Thursday',
+            startTime: '06:00',
+            endTime: '15:00',
+          },
+          {
+            dayOfWeekStart: 'Monday',
+            dayOfWeekEnd: 'Thursday',
+            startTime: '05:00',
+            endTime: '16:00',
           },
         ],
       };

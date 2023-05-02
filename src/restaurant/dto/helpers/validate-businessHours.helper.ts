@@ -22,47 +22,50 @@ const checkTimeInterval = (start: string, end: string): boolean => {
 };
 
 const checkForOverlap = (
-  item1: BusinessHours,
-  item2: BusinessHours,
+  businessHours1: BusinessHours,
+  businessHours2: BusinessHours,
 ): boolean => {
   const format = 'HH:mm';
 
-  for (
-    let i = moment().day(item1.dayOfWeekStart);
-    i <= moment().day(item1.dayOfWeekEnd);
-    i.add(1, 'days')
-  ) {
-    const start1 = moment(item1.startTime, format);
-    const end1 = moment(item1.endTime, format);
-    const start2 = moment(item2.startTime, format);
-    const end2 = moment(item2.endTime, format);
-    const currentDay = i.format('dddd');
+  const start1 = moment(businessHours1.startTime, format);
+  const end1 = moment(businessHours1.endTime, format);
+  const start2 = moment(businessHours2.startTime, format);
+  const end2 = moment(businessHours2.endTime, format);
 
-    if (
-      currentDay === item2.dayOfWeekStart ||
-      currentDay === item2.dayOfWeekEnd
-    ) {
-      if (currentDay === item2.dayOfWeekStart) {
-        start2.hours(moment(item2.startTime, format).hours());
-        start2.minutes(moment(item2.startTime, format).minutes());
-      }
-      if (currentDay === item2.dayOfWeekEnd) {
-        end2.hours(moment(item2.endTime, format).hours());
-        end2.minutes(moment(item2.endTime, format).minutes());
-      }
-    } else {
-      start2.hours(0);
-      start2.minutes(0);
-      end2.hours(23);
-      end2.minutes(59);
-    }
+  const daysOfWeek1 = getDaysOfWeek(
+    businessHours1.dayOfWeekStart,
+    businessHours1.dayOfWeekEnd,
+  );
+  const daysOfWeek2 = getDaysOfWeek(
+    businessHours2.dayOfWeekStart,
+    businessHours2.dayOfWeekEnd,
+  );
 
-    if (start2.isBetween(start1, end1) || end2.isBetween(start1, end1)) {
-      return true;
+  if (start2.isBefore(start1) && end2.isAfter(end1)) {
+    return true;
+  }
+
+  for (const day1 of daysOfWeek1) {
+    for (const day2 of daysOfWeek2) {
+      if (day1 === day2) {
+        if (start2.isBetween(start1, end1) || end2.isBetween(start1, end1)) {
+          return true;
+        }
+      }
     }
   }
 
   return false;
+};
+
+const getDaysOfWeek = (
+  dayOfWeekStart: string,
+  dayOfWeekEnd: string,
+): string[] => {
+  const weekdays = moment.weekdays();
+  const start = weekdays.indexOf(dayOfWeekStart);
+  const end = weekdays.indexOf(dayOfWeekEnd);
+  return weekdays.slice(start, end + 1);
 };
 
 @ValidatorConstraint()
