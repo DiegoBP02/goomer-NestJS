@@ -1,6 +1,9 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { Restaurant } from 'src/restaurant/schema/restaurant.schema';
+import {
+  BusinessHours,
+  Restaurant,
+} from 'src/restaurant/schema/restaurant.schema';
 
 export type ProductDocument = Product & Document;
 
@@ -15,13 +18,7 @@ export enum Category {
 export type Sale = {
   description: string;
   promotionalPrice: number;
-  timeOnSale: TimeOnSale;
-};
-
-type TimeOnSale = {
-  daysOfWeek: string[];
-  startTime: string;
-  endTime: string;
+  timeOnSale: BusinessHours;
 };
 
 @Schema()

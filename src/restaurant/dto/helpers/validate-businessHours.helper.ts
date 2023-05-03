@@ -6,12 +6,12 @@ import * as moment from 'moment';
 import { InvalidBusinessHours } from '../../exceptions/invalid-businesshours.exception';
 import { BusinessHours } from 'src/restaurant/schema/restaurant.schema';
 
-function isValidDayOfWeek(dayOfWeek: string): boolean {
+export const isValidDayOfWeek = (dayOfWeek: string): boolean => {
   const weekdays = moment.weekdays();
   return weekdays.includes(dayOfWeek);
-}
+};
 
-const isValidTime = (time: string): boolean => {
+export const isValidTime = (time: string): boolean => {
   return moment(time, 'HH:mm', true).isValid();
 };
 

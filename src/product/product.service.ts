@@ -3,7 +3,6 @@ import { ProductRepository } from './product.repository';
 import { CreateProductDto } from './dto/create-product-dto';
 import { Product } from './schema/product.schema';
 import { UpdateProductDto } from './dto/update-product-dto';
-import { RestaurantRepository } from 'src/restaurant/restaurant.repository';
 import { RestaurantController } from 'src/restaurant/restaurant.controller';
 
 @Injectable()
