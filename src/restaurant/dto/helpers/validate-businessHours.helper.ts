@@ -58,7 +58,7 @@ const checkForOverlap = (
   return false;
 };
 
-const getDaysOfWeek = (
+export const getDaysOfWeek = (
   dayOfWeekStart: string,
   dayOfWeekEnd: string,
 ): string[] => {
