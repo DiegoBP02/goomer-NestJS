@@ -4,7 +4,6 @@ import { ProductService } from './product.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Product, ProductSchema } from './schema/product.schema';
 import { ProductRepository } from './product.repository';
-import { RestaurantController } from 'src/restaurant/restaurant.controller';
 import { RestaurantModule } from 'src/restaurant/restaurant.module';
 import { ProductMiddleware } from './middlewares/product-not-found.middleware';
 

@@ -3,19 +3,12 @@ import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose';
 export abstract class EntityRepository<T extends Document> {
   constructor(protected readonly entityModel: Model<T>) {}
 
-  async findOne(
-    entityFilterQuery: FilterQuery<T>,
-    projection?: Record<string, unknown>,
-  ): Promise<T> {
-    return this.entityModel
-      .findOne(entityFilterQuery, {
-        ...projection,
-      })
-      .exec();
+  async findOne(entityFilterQuery: FilterQuery<T>): Promise<T> {
+    return await this.entityModel.findOne(entityFilterQuery).exec();
   }
 
   async find(entityFilterQuery: FilterQuery<T>): Promise<T[]> {
-    return this.entityModel.find(entityFilterQuery);
+    return await this.entityModel.find(entityFilterQuery);
   }
 
   async create(createEntityData: unknown): Promise<T> {
@@ -27,7 +20,7 @@ export abstract class EntityRepository<T extends Document> {
     entityFilterQuery: FilterQuery<T>,
     updateEntityData: UpdateQuery<unknown>,
   ): Promise<T> {
-    return this.entityModel.findOneAndUpdate(
+    return await this.entityModel.findOneAndUpdate(
       entityFilterQuery,
       updateEntityData,
       {
@@ -38,6 +31,6 @@ export abstract class EntityRepository<T extends Document> {
   }
 
   async findOneAndRemove(entityFilterQuery: FilterQuery<T>): Promise<T> {
-    return this.entityModel.findOneAndRemove(entityFilterQuery);
+    return await this.entityModel.findOneAndRemove(entityFilterQuery);
   }
 }

@@ -51,7 +51,6 @@ describe('RestaurantRepository', () => {
         test('then it should call the restaurantModel', () => {
           expect(restaurantModel.findOne).toHaveBeenCalledWith(
             restaurantFilterQuery,
-            {},
           );
         });
 
