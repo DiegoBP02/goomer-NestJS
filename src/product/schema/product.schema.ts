@@ -33,7 +33,7 @@ export class Product {
   price: number;
 
   @Prop({ enum: Category })
-  category: string;
+  category: Category;
 
   @Prop()
   sale: Sale[];

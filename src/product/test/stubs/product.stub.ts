@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { Product } from 'src/product/schema/product.schema';
+import { Category, Product } from 'src/product/schema/product.schema';
 
 export interface ProductMongoose extends Product {
   _id: string;
@@ -13,7 +13,7 @@ export const productStub = (): ProductMongoose => {
     image: 'https://example.com/image.jpg',
     name: 'Grilled Salmon',
     price: 25.99,
-    category: 'entrees',
+    category: Category.Entrees,
     sale: [
       {
         description: '20% off on Tuesdays',
