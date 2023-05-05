@@ -20,7 +20,7 @@ export const productStub = (): ProductMongoose => {
         promotionalPrice: 20.79,
         timeOnSale: {
           dayOfWeekStart: 'Monday',
-          dayOfWeekEnd: 'Friday',
+          dayOfWeekEnd: 'Thursday',
           startTime: '06:00',
           endTime: '15:00',
         },

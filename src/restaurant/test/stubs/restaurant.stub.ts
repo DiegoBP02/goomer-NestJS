@@ -8,7 +8,7 @@ export interface RestaurantMongoose extends Restaurant {
 export const restaurantStub = (): RestaurantMongoose => {
   return {
     image: 'https://example.com/restaurant.jpg',
-    name: 'Example Restaurant 2',
+    name: 'Example Restaurant',
     address: '123 Main St, Anytown USA',
     businessHours: [
       {

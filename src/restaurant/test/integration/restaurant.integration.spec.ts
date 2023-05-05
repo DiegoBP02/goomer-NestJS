@@ -12,7 +12,7 @@ import {
   generateRandomId,
 } from './helpers/create-restaurant.help';
 
-describe('RestaurantController', () => {
+describe('RestaurantIntegration', () => {
   let dbConnection: Connection;
   let httpServer: any;
   let app: any;
